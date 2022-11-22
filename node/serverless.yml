@@ -1,0 +1,29 @@
+service: node
+
+custom:
+  region: eu-west-1
+
+provider:
+  name: aws
+  runtime: nodejs16.x
+  memorySize: 512
+  stage: ${opt:stage}
+  region: "${self:custom.region}"
+  logRetentionInDays: 1
+  versionFunctions: false
+  logs:
+    restApi:
+      accessLogging: true
+      format: '{"requestTime":"$context.requestTime","requestId":"$context.requestId","httpMethod":"$context.httpMethod","path":"$context.path","resourcePath":"$context.resourcePath","status":$context.status,"responseLatency":$context.responseLatency,"xrayTraceId":"$context.xrayTraceId","integrationRequestId":"$context.integration.requestId","functionResponseStatus":"$context.integration.status","integrationLatency":"$context.integration.latency","integrationServiceStatus":"$context.integration.integrationStatus","ip":"$context.identity.sourceIp","userAgent":"$context.identity.userAgent","principalId":"$context.authorizer.principalId"}'
+      executionLogging: false # Turn off execution logs b/c they're too noisy.
+  tracing:
+    apiGateway: true
+
+functions:
+  pokedex:
+    handler: index.handler
+    events:
+      - http: 
+          path: /
+          method: get 
+          cors: true

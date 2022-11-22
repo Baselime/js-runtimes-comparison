@@ -1,0 +1,8 @@
+version: 0.0.23
+application: js-runtimes
+provider: aws
+infrastructure:
+  stacks:
+    - DenoProduction
+    - bun-api
+    - node-prod

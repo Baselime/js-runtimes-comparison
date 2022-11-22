@@ -1,0 +1,98 @@
+lambda-errors:
+  type: query
+  properties:
+    name: Events with LogLevel ERROR
+    description: Count of the number of events with LogLevel ERROR
+    parameters:
+      calculations:
+        - COUNT
+      datasets:
+        - logs
+      filters:
+        - LogLevel = ERROR
+      groupBy:
+        limit: 10
+        orderBy: COUNT
+        type: string
+        value: namespace
+lambda-invocations-durations:
+  type: query
+  properties:
+    name: Duration of lambda invocations
+    description: Statistics on the duration of lambda invocations across the application
+    parameters:
+      calculations:
+        - MAX(@duration)
+        - P99(@duration)
+        - P75(@duration)
+      datasets:
+        - logs
+      filters:
+        - "@type = REPORT"
+      groupBy:
+        limit: 5
+        orderBy: P75(@duration)
+        type: string
+        value: namespace
+lambda-cold-start-duration:
+  type: query
+  properties:
+    name: Duration of lambda cold-starts
+    description: Statistics on the duration of lambda cold starts across the application
+    parameters:
+      calculations:
+        - MAX(@initDuration)
+        - MIN(@initDuration)
+        - P75(@initDuration)
+        - COUNT
+      datasets:
+        - logs
+      filters:
+        - "@type = REPORT"
+      groupBy:
+        limit: 5
+        orderBy: P75(@initDuration)
+        type: string
+        value: namespace
+highest-billed-invocations:
+  type: query
+  properties:
+    name: Highest Billed Duration Invocations
+    description: Invocations with the highed billed duration
+    parameters:
+      calculations:
+        - MAX(@billedDuration)
+        - P99(@billedDuration)
+        - P75(@billedDuration)
+      datasets:
+        - logs
+      filters:
+        - "@type = REPORT"
+      groupBy:
+        limit: 5
+        orderBy: P75(@billedDuration)
+        type: string
+        value: namespace
+timeouts:
+  type: query
+  properties:
+    name: Invocations that Timed Out
+    description: Invocations that reported a time out
+    parameters:
+      calculations:
+        - COUNT
+      datasets:
+        - logs
+      filters:
+        - "@message INCLUDES Task timed out"
+      groupBy:
+        limit: 5
+        orderBy: COUNT
+        type: string
+        value: namespace
+developers:
+  type: channel
+  properties:
+    type: slack
+    targets:
+      - baselime-alerts

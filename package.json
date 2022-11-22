@@ -1,0 +1,16 @@
+{
+  "name": "js-runtimes",
+  "version": "1.0.0",
+  "description": "Comparing JavaScript runtimes on AWS Lambda.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.1259.0",
+    "axios": "^1.1.3"
+  }
+}
